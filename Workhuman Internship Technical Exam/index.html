@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Country Search Application</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+            margin: 0;
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 80%;
+            font-size: 16px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background: #fff;
+            margin: 5px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+    </style>
+
+
+    <script>
+        async function searchCountries() {
+            const query = document.getElementById("search-input").value;
+            const response = await fetch(`/search?query=${encodeURIComponent(query)}`);
+            const countries = await response.json();
+            const resultContainer = document.getElementById("results");
+            resultContainer.innerHTML = '';
+
+            if (countries.length === 0) {
+                resultContainer.innerHTML = '<p>No countries found.</p>';
+                return;
+            }
+
+            countries.forEach(country => {
+                const p = document.createElement("p");
+                p.textContent = country;
+                resultContainer.appendChild(p);
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1>Country Search</h1>
+    <input type="text" id="search-input" placeholder="Search for a country..." />
+    <button onclick="searchCountries()">Search</button>
+    <div id="results"></div>
+</body>
+</html>
